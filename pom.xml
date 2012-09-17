@@ -55,6 +55,14 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.allanbank</groupId>
+			<artifactId>mongodb-async-driver</artifactId>
+			<version>1.0.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Spring Data -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
