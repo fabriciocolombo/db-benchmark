@@ -2,14 +2,18 @@ package br.com.fabriciodev.benchmark;
 
 import java.util.Date;
 
+import com.netflix.astyanax.mapping.Column;
 import com.netflix.astyanax.mapping.Id;
 
 public class Person {
 
 	@Id
 	private Long id;
+	@Column
 	private String name;
+	@Column
 	private Date birthDate;
+	@Column
 	private Double salary;
 
 	public Long getId() {

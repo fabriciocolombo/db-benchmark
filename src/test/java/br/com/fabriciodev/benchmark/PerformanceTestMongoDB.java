@@ -19,6 +19,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.MongoOptions;
 
 public class PerformanceTestMongoDB extends BasePerformanceTest {
 
@@ -62,6 +63,45 @@ public class PerformanceTestMongoDB extends BasePerformanceTest {
 			dbObject.put("salary", person.getSalary());
 
 			list.add(dbObject);
+			
+			if (list.size() % 50000 == 0){
+				collection.insert(list);
+				list.clear();
+			}
+		}
+
+		collection.insert(list);
+	}
+	
+	@Test
+	public void mongodbSafeBatch() throws UnknownHostException, MongoException {
+		MongoOptions options = new MongoOptions();
+		
+		options.safe = true;
+		options.w = 1;
+				
+		Mongo mongo = new Mongo("localhost", options);
+
+		DB db = mongo.getDB("bench");
+
+		DBCollection collection = db.getCollection("person");
+
+		collection.drop();
+
+		List<DBObject> list = new ArrayList<DBObject>();
+		for (Person person : getPersons()) {
+			BasicDBObject dbObject = new BasicDBObject();
+			dbObject.put("id", person.getId());
+			dbObject.put("name", person.getName());
+			dbObject.put("birthDate", person.getBirthDate());
+			dbObject.put("salary", person.getSalary());
+
+			list.add(dbObject);
+			
+			if (list.size() % 50000 == 0){
+				collection.insert(list);
+				list.clear();
+			}
 		}
 
 		collection.insert(list);
@@ -77,6 +117,7 @@ public class PerformanceTestMongoDB extends BasePerformanceTest {
 
 		collection.drop();
 
+		
 		for (Person person : getPersons()) {
 			Document document = BuilderFactory.start().add("id", person.getId()).add("name", person.getName())
 					.add("birthDate", person.getBirthDate()).add("salary", person.getSalary()).build();
@@ -102,6 +143,11 @@ public class PerformanceTestMongoDB extends BasePerformanceTest {
 					.add("birthDate", person.getBirthDate()).add("salary", person.getSalary()).build();
 
 			list.add(document);
+			
+			if (list.size() % 50000 == 0){
+				collection.insertAsync(list.toArray(new DocumentAssignable[] {}));
+				list.clear();
+			}
 		}
 
 		collection.insertAsync(list.toArray(new DocumentAssignable[] {}));
