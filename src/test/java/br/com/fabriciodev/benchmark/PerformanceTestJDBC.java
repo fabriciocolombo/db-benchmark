@@ -69,12 +69,12 @@ public class PerformanceTestJDBC extends BasePerformanceTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void mySql() {
 		runWithJDBC("jdbc:mysql://localhost/bench", "root", "123");
 	}
 
-	@Test
+	//@Test
 	public void mySqlBatch() {
 		runWithJDBCBatch("jdbc:mysql://localhost/bench", "root", "123");
 	}

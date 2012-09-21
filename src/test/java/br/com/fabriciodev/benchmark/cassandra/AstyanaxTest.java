@@ -102,6 +102,7 @@ public class AstyanaxTest extends BasePerformanceTest {
 	// @Test
 	public void insertWithCheck() throws Exception {
 		insertBatch();
+		
 
 		OperationResult<Rows<Long, String>> rows = cassandraConnection
 				.getKeySpace().prepareQuery(CassandraConnection.CF_DATA)
